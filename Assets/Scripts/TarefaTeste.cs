@@ -6,11 +6,10 @@ public class TarefaTeste : MonoBehaviour
 {
     public Transform[] objectsToMoveTo;
     private int currentTargetIndex = 0;
-    public float moveSpeed = 5f;
+    public float moveSpeed = 20f;
 
     void FixedUpdate()
     {
-
         float distanceToTarget = Vector3.Distance(transform.position, objectsToMoveTo[currentTargetIndex].position);
         float lerpValue = Mathf.Clamp01(moveSpeed * Time.deltaTime / distanceToTarget);
         transform.position = Vector3.Lerp(transform.position, objectsToMoveTo[currentTargetIndex].position, lerpValue);
@@ -22,15 +21,12 @@ public class TarefaTeste : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(lookPos);
         }
 
-        if (transform.position == objectsToMoveTo[currentTargetIndex].position)
+        if (distanceToTarget < 0.1f)
         {
-            if (currentTargetIndex == objectsToMoveTo.Length - 1)
+            currentTargetIndex++;
+            if (currentTargetIndex >= objectsToMoveTo.Length)
             {
-                return;
-            }
-            else
-            {
-                currentTargetIndex++;
+                currentTargetIndex = 0;
             }
         }
     }
